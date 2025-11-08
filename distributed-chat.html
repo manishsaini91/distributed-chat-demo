@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Distributed Chat Demo</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        #messages {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        input {
+            padding: 5px;
+            width: 300px;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Distributed Chat Demo</h2>
+    <input id="msgInput" placeholder="Type a message" />
+    <button onclick="sendMsg()">Send</button>
+    <ul id="messages"></ul>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpDYHO1O1ExyuySO7MJfzkbBXELIxL1IM",
+            authDomain: "distributed-chat-demo.firebaseapp.com",
+            databaseURL: "https://distributed-chat-demo-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "distributed-chat-demo",
+            storageBucket: "distributed-chat-demo.firebasestorage.app",
+            messagingSenderId: "543438888822",
+            appId: "1:543438888822:web:9126f9823a359cb6546457",
+            measurementId: "G-NGSQCGC8GJ"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Reference to messages
+        const messagesRef = db.ref("messages");
+
+        // Send message
+        function sendMsg() {
+            const msg = document.getElementById("msgInput").value;
+            if (msg.trim() !== "") {
+                messagesRef.push({ text: msg });
+                document.getElementById("msgInput").value = "";
+            }
+        }
+
+        // Listen for new messages
+        messagesRef.on("child_added", function (snapshot) {
+            const li = document.createElement("li");
+            li.textContent = snapshot.val().text;
+            document.getElementById("messages").appendChild(li);
+        });
+    </script>
+</body>
+
+</html>
