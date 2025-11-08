@@ -15,7 +15,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// References
+// Referencess
 const messagesRef = db.ref("messages");
 const activeNodesRef = db.ref("activeNodes");
 
